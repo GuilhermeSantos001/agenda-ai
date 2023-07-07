@@ -1,0 +1,91 @@
+version: '3.9'
+
+services:
+  mongodb:
+    container_name: mongodb-preview
+    image: mongo:latest
+    restart: always
+    networks:
+      default:
+        aliases:
+          - mongodb
+        ipv4_address: 172.18.0.3
+    ports:
+      - ${MONGODB_PORT}:${MONGODB_PORT}
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+  redis:
+    container_name: redis-preview
+    image: redis:latest
+    restart: always
+    networks:
+      default:
+        aliases:
+          - redis
+        ipv4_address: 172.18.0.4
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    volumes:
+      - project_development:/data
+  rabbitmq:
+    container_name: rabbitmq-preview
+    image: rabbitmq:3-management-alpine
+    restart: always
+    networks:
+      default:
+        aliases:
+          - rabbitmq
+        ipv4_address: 172.18.0.5
+    ports:
+        - ${RABBITMQ_PORT}:${RABBITMQ_PORT}
+        - ${RABBITMQ_WEB_PORT}:${RABBITMQ_WEB_PORT}
+    volumes:
+        - rabbitmq_data:/var/lib/rabbitmq/
+        - rabbitmq_data:/var/log/rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
+  nestjs:
+    container_name: nestjs-preview
+    restart: always
+    links:
+      - mongodb
+      - redis
+      - rabbitmq
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+    command: yarn start:dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    networks:
+      default:
+        aliases:
+          - backend
+        ipv4_address: 172.18.0.2
+    ports:
+      - ${PORT}:${PORT}
+      - 9229:9229 # Debug port
+    volumes:
+      - .:/app
+      - /node_modules
+    env_file:
+      - ./.env.local
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: '172.18.0.0/16'
+
+volumes:
+  mongodb_data:
+  rabbitmq_data:
+  project_development:

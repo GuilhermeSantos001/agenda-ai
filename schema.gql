@@ -1,0 +1,66 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+"""doctor"""
+type Doctor {
+  id: ID!
+  name: String!
+  email: String!
+  documents: JSON!
+  created_at: Date!
+  updated_at: Date!
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""Date custom scalar type"""
+scalar Date
+
+type Query {
+  patientSchedules(patientSchedulesData: PatientSchedulesInput!): [String!]!
+  doctorScheduleMonthly(scheduleMonthlyData: ScheduleMonthlyInput!): [String!]!
+  doctor(id: String!): Doctor!
+  doctors: [Doctor!]!
+}
+
+input PatientSchedulesInput {
+  doctor: String
+  patient: JSON
+}
+
+input ScheduleMonthlyInput {
+  hour: Float
+  minute: Float
+  day: Float
+  month: Float
+  year: Float
+}
+
+type Mutation {
+  addSchedule(newScheduleData: NewCalendarInput!): String!
+  addDoctor(newDoctorData: NewDoctorInput!): Doctor!
+  removeDoctor(id: String!): Boolean!
+}
+
+input NewCalendarInput {
+  hour: Float!
+  minute: Float!
+  day: Float!
+  month: Float!
+  year: Float!
+  patient: JSON!
+}
+
+input NewDoctorInput {
+  name: String!
+  email: String!
+  documents: JSON!
+}
+
+type Subscription {
+  doctorAdded: Doctor!
+}
