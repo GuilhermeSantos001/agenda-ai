@@ -17,6 +17,8 @@ REDIS_PASSWORD=\n\
 RABBITMQ_HOST=amqp://rabbitmq:rabbitmq@localhost:5672\n\
 RABBITMQ_PORT=5672\n\
 RABBITMQ_WEB_PORT=15672\n\
+RABBITMQ_USER=rabbitmq\n\
+RABBITMQ_PASS=rabbitmq\n\
 " >> .env
 
 echo -e "\
@@ -34,6 +36,8 @@ REDIS_PASSWORD=\n\
 RABBITMQ_HOST=amqp://rabbitmq:rabbitmq@172.18.0.5:5672\n\
 RABBITMQ_PORT=5672\n\
 RABBITMQ_WEB_PORT=15672\n\
+RABBITMQ_USER=rabbitmq\n\
+RABBITMQ_PASS=rabbitmq\n\
 " >> .env.local
 
 echo "Environment variables setted up!"
