@@ -9,6 +9,8 @@ import { Calendar } from './models/calendar.model';
 import { CreateCalendarFactory } from './factories/create-calendar.factory';
 import { UpdateCalendarFactory } from './factories/update-calendar.factory';
 import { FindAllCalendarsFactory } from './factories/findAll-calendars.factory';
+import { FindByIdCalendarFactory } from './factories/findById-calendars.factory';
+import { RemoveCalendarFactory } from './factories/remove-calendars.factory';
 
 @Injectable()
 export class CalendarService {
@@ -24,8 +26,8 @@ export class CalendarService {
     return await UpdateCalendarFactory.run(id, data, this.calendarModel);
   }
 
-  async findOneById(id: string): Promise<Calendar> {
-    return {} as any;
+  async findOneById(id: string): Promise<Calendar | Error> {
+    return await FindByIdCalendarFactory.run(id, this.calendarModel);
   }
 
   async findAll(): Promise<Calendar[]> {
@@ -33,6 +35,6 @@ export class CalendarService {
   }
 
   async remove(id: string): Promise<boolean> {
-    return true;
+    return await RemoveCalendarFactory.run(id, this.calendarModel);
   }
 }

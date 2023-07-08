@@ -24,9 +24,10 @@ export class DoctorResolver {
   @Query((returns) => Doctor)
   async doctor(@Args('id') id: string): Promise<Doctor> {
     const doctor = await this.doctorService.findOneById(id);
-    if (doctor) {
+
+    if (doctor instanceof Error)
       throw new NotFoundException(`Doctor with id(${id}) not exists!`);
-    }
+
     return doctor;
   }
 

@@ -4,8 +4,8 @@ import * as lodash from 'lodash';
 import { InternalServerErrorException } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { AmqpConnection } from '@golevelup/nestjs-rabbitmq';
-import { Queue } from 'bull';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Queue } from 'bull';
 
 import { PatientSchedulesInput } from './calendar/dto/patient-schedules.input';
 import { ScheduleMonthlyInput } from './calendar/dto/schedule-monthly.input';
